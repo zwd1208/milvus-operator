@@ -270,6 +270,32 @@ func (c MilvusComponent) GetComponentPort(spec v1beta1.MilvusSpec) int32 {
 	return c.DefaultPort
 }
 
+// GetSideCars returns the component sidecar conatiners
+func (c MilvusComponent) GetSideCars(spec v1beta1.MilvusSpec) []corev1.Container {
+	componentField := reflect.ValueOf(spec.Com).FieldByName(c.FieldName)
+	if componentField.IsNil() {
+		return nil
+	}
+
+	sidecars, _ := componentField.Elem().
+		FieldByName("Component").
+		FieldByName("SideCars").Interface().([]corev1.Container)
+	return sidecars
+}
+
+// GetSideCars returns the component init conatiners
+func (c MilvusComponent) GetInitContainers(spec v1beta1.MilvusSpec) []corev1.Container {
+	componentField := reflect.ValueOf(spec.Com).FieldByName(c.FieldName)
+	if componentField.IsNil() {
+		return nil
+	}
+
+	initConainers, _ := componentField.Elem().
+		FieldByName("Component").
+		FieldByName("InitContainers").Interface().([]corev1.Container)
+	return initConainers
+}
+
 // GetComponentSpec returns the component spec
 func (c MilvusComponent) GetComponentSpec(spec v1beta1.MilvusSpec) v1beta1.ComponentSpec {
 	value := reflect.ValueOf(spec.Com).FieldByName(c.FieldName).Elem().FieldByName("ComponentSpec")
