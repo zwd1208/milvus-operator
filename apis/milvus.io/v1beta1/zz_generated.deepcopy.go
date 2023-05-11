@@ -37,14 +37,14 @@ func (in *Component) DeepCopyInto(out *Component) {
 	}
 	if in.SideCars != nil {
 		in, out := &in.SideCars, &out.SideCars
-		*out = make([]v1.Container, len(*in))
+		*out = make([]Values, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
 	if in.InitContainers != nil {
 		in, out := &in.InitContainers, &out.InitContainers
-		*out = make([]v1.Container, len(*in))
+		*out = make([]Values, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}

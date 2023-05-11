@@ -277,9 +277,18 @@ func (c MilvusComponent) GetSideCars(spec v1beta1.MilvusSpec) []corev1.Container
 		return nil
 	}
 
-	sidecars, _ := componentField.Elem().
+	values, _ := componentField.Elem().
 		FieldByName("Component").
-		FieldByName("SideCars").Interface().([]corev1.Container)
+		FieldByName("SideCars").Interface().([]v1beta1.Values)
+
+	var sidecars []corev1.Container
+	for _, v := range values {
+		var sidecar corev1.Container
+		if err := v.AsObject(&sidecar); err != nil {
+			sidecars = append(sidecars, sidecar)
+		}
+	}
+
 	return sidecars
 }
 
@@ -290,9 +299,18 @@ func (c MilvusComponent) GetInitContainers(spec v1beta1.MilvusSpec) []corev1.Con
 		return nil
 	}
 
-	initConainers, _ := componentField.Elem().
+	values, _ := componentField.Elem().
 		FieldByName("Component").
-		FieldByName("InitContainers").Interface().([]corev1.Container)
+		FieldByName("InitContainers").Interface().([]v1beta1.Values)
+
+	var initConainers []corev1.Container
+	for _, v := range values {
+		var initContainer corev1.Container
+		if err := v.AsObject(&initContainer); err != nil {
+			initConainers = append(initConainers, initContainer)
+		}
+	}
+
 	return initConainers
 }
 
