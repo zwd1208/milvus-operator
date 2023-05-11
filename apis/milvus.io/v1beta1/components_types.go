@@ -175,12 +175,12 @@ type Component struct {
 	// SideCars is same as []corev1.Container, we use a Values here to avoid the CRD become too large
 	// +kubebuilder:validation:Optional
 	// +kubebuilder:pruning:PreserveUnknownFields
-	SideCars []Values `json:"volumes,omitempty"`
+	SideCars []Values `json:"sidecars,omitempty"`
 
 	// SideCars is same as []corev1.Container, we use a Values here to avoid the CRD become too large
 	// +kubebuilder:validation:Optional
 	// +kubebuilder:pruning:PreserveUnknownFields
-	InitContainers []Values `json:"volumes,omitempty"`
+	InitContainers []Values `json:"initContainers,omitempty"`
 }
 
 type MilvusQueryNode struct {
