@@ -8,7 +8,7 @@ TOOL_VERSION ?= 0.1.1
 MILVUS_HELM_VERSION ?= milvus-4.0.13
 RELEASE_IMG ?= milvusdb/milvus-operator:v$(VERSION)
 TOOL_RELEASE_IMG ?= milvusdb/milvus-config-tool:v$(TOOL_VERSION)
-KIND_CLUSTER ?= kind-dev
+KIND_CLUSTER ?= kind
 
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
 CRD_OPTIONS ?= "crd:preserveUnknownFields=false,maxDescLen=0"
@@ -182,10 +182,10 @@ deploy-manifests: manifests kustomize helm-generate
 	helm template milvus-operator --create-namespace -n milvus-operator ./charts/milvus-operator-$(VERSION).tgz  >> deploy/manifests/deployment.yaml
 
 kind-dev: kind
-	sudo $(KIND) create cluster --config config/kind/kind-dev.yaml --name kind-dev
+	sudo $(KIND) create cluster --config config/kind/kind-dev.yaml --name ${KIND_CLUSTER}
 
 uninstall-kind-dev: kind
-	sudo $(KIND) delete cluster --name kind-dev
+	sudo $(KIND) delete cluster --name ${KIND_CLUSTER}
 
 # Install local certificate
 # Required for webhook server to start
